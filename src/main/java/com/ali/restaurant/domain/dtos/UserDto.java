@@ -1,4 +1,4 @@
-package com.ali.restaurant.domain.entities;
+package com.ali.restaurant.domain.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,19 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class User {
-    @Field(type = FieldType.Keyword)
+public class UserDto {
     private String id;
-    @Field(type = FieldType.Text)
     private String username;
-    @Field(type = FieldType.Text)
     private String givenName;
-    @Field(type = FieldType.Text)
     private String familyName;
-
 }
