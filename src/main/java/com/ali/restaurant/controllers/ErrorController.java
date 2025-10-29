@@ -3,6 +3,8 @@ package com.ali.restaurant.controllers;
 import ch.qos.logback.core.model.processor.ModelHandlerException;
 import com.ali.restaurant.domain.dtos.ErrorDto;
 import com.ali.restaurant.exceptions.BaseException;
+import com.ali.restaurant.exceptions.RestaurantNotFoundException;
+import com.ali.restaurant.exceptions.ReviewNotAllowedException;
 import com.ali.restaurant.exceptions.StorageException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -67,5 +69,29 @@ public class ErrorController {
                 .build();
         return new ResponseEntity<>(errorDto , HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+   @ExceptionHandler
+    public ResponseEntity<ErrorDto> handleRestaurantNotFoundException(RestaurantNotFoundException ex) {
+           log.error("Caught RestaurantNotFoundException", ex);
+             ErrorDto errorDto = ErrorDto.builder()
+            .status(HttpStatus.NOT_FOUND.value())
+            .message("The specified restaurant wasn't found")
+            .build();
+           return new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+}
+    @ExceptionHandler(ReviewNotAllowedException.class)
+    public ResponseEntity<ErrorDto> handleRestaurantReviewNotAllowedException (
+            ReviewNotAllowedException ex
+    )
+    {
+        log.error("Caught ReviewNotAllowedException exception", ex);
+        // Create a user-friendly error response
+        ErrorDto error = ErrorDto.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("The specified review cannot be created or updated")
+                .build();
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+    }
+
 
 }

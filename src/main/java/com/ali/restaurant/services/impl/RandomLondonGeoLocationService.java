@@ -3,9 +3,10 @@ package com.ali.restaurant.services.impl;
 import com.ali.restaurant.domain.GeoLocation;
 import com.ali.restaurant.domain.entities.Address;
 import com.ali.restaurant.services.GeoLocationService;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
-
+@Service
 public class RandomLondonGeoLocationService implements GeoLocationService {
  private static final float MIN_LATITUDE = 51.28f;
  private static final float MAX_LATITUDE = 51.686f;

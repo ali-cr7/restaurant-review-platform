@@ -10,7 +10,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class    UserDto {
     private String id;
     private String username;
     private String givenName;
