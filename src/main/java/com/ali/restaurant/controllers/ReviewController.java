@@ -65,5 +65,47 @@ public class ReviewController {
                 .map(reviewMapper::toDto);
     }
 
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<ReviewDto> getRestaurantReview(
+            @PathVariable String restaurantId,
+            @PathVariable String reviewId) {
+        return reviewService
+                .getReview(restaurantId, reviewId)
+                .map(reviewMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.noContent().build());
+    }
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<ReviewDto> updateReview(
+            @PathVariable String restaurantId,
+            @PathVariable String reviewId,
+            @Valid @RequestBody ReviewCreateUpdateRequestDto review,
+            @AuthenticationPrincipal Jwt jwt
+    ){
+        // Convert the DTO to domain object
+        ReviewCreateUpdateRequest reviewCreateUpdateRequest =
+                reviewMapper.toReviewCreateUpdateRequest(review);
+        User user = jwtToUser(jwt);
+        // Call service to perform update
+        Review updatedReview = reviewService.updateReview(
+                user,
+                restaurantId,
+                reviewId,
+                reviewCreateUpdateRequest);
+        // Return updated review
+        return ResponseEntity.ok(reviewMapper.toDto(updatedReview));
+
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Void> deleteReview(
+            @PathVariable String restaurantId,
+            @PathVariable String reviewId
+    )
+    {
+        reviewService.deleteReview(restaurantId, reviewId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
